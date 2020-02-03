@@ -14,7 +14,7 @@ import { FnParam } from '@angular/compiler/src/output/output_ast';
 })
 export class HeroDetailComponent implements OnInit {
 
-  hero$: Observable<Hero>;
+  hero;
   
   constructor(
     private route: ActivatedRoute,
@@ -23,15 +23,15 @@ export class HeroDetailComponent implements OnInit {
     ) { }
     
   ngOnInit() {
-    this.hero$ = this.route.paramMap.pipe(
-      switchMap((params: ParamMap) => 
-      this.service.getHero(params.get('id')))
-    );
+    this.service.getHero(this.route.snapshot.paramMap.get('id')).subscribe(data => {
+      this.hero = data;
+      console.log(this.hero);
+    });
   }
 
-  gotoHeroes(hero: Hero) {
-    let heroId = hero ? hero.id : null;
-    this.router.navigate(['/heroes']);
-  }
+  // gotoHeroes(hero: Hero) {
+  //   let heroId = hero ? hero.id : null;
+  //   this.router.navigate(['/heroes']);
+  // }
 
-}
+  }
